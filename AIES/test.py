@@ -5,6 +5,7 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.preprocessing import image
 import os
+from config import *
 
 def binarize(img):
     img = image.img_to_array(img, dtype='uint8')
@@ -53,18 +54,17 @@ def resize_pad(img, size, padColor=255):
     return scaled_img
 
 # Load your model
-model_path = r'C:\Users\Anil Cerejo\OneDrive\Desktop\AIES\Magic-board\eqn-detect-model.keras'
+model_path = r'AIES\eqn-detect-model.keras'
 model = tf.keras.models.load_model(model_path)
 
 # Class names from your training generator
-data_dir = r'C:\Users\Anil Cerejo\OneDrive\Desktop\AIES\data1'
 batch_size = 32
 img_height = 45
 img_width = 45
 
 train_datagen = ImageDataGenerator(preprocessing_function=binarize)
 train_generator = train_datagen.flow_from_directory(
-    data_dir,
+    DATA_DIR,
     target_size=(img_height, img_width),
     batch_size=batch_size,
     color_mode="grayscale",
@@ -76,7 +76,7 @@ class_names = [k for k, v in train_generator.class_indices.items()]
 
 # Process a specific image
 IMAGE = "equation.png"  # Change this to your target image file
-image_path = os.path.join(r"C:\Users\Anil Cerejo\OneDrive\Desktop\AIES", IMAGE)
+image_path = EQUATION_OUTPUT_PATH
 # Read and process the image
 input_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 

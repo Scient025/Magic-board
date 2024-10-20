@@ -3,12 +3,16 @@ from tkinter import ttk
 import tkinter as tk
 from PIL import Image, ImageGrab
 import subprocess
+from config import * 
 
 root = Tk()
 root.title("Notes")
 root.geometry("1050x570+150+50")
 root.configure(bg="#f2f3f5")
 root.resizable(False, False)
+
+# Add a border to the main window
+root.configure(highlightbackground="black", highlightthickness=2)
 
 current_x = 0
 current_y = 0
@@ -29,15 +33,15 @@ def new_canvas():
     display_colors()
 
 # Icon
-image_icon = PhotoImage(file="C:\\Users\\Anil Cerejo\\OneDrive\\Desktop\\AIES\\Magic-board\\logo.png")
+image_icon = PhotoImage(file= LOGO_PATH)
 root.iconphoto(False, image_icon)
 
 # Color options
-color_box = PhotoImage(file="C:\\Users\\Anil Cerejo\\OneDrive\\Desktop\\AIES\\Magic-board\\color section.png")
+color_box = PhotoImage(file= COLOR_SECTION_PATH)
 Label(root, image=color_box, bg="#f2f3f5").place(x=10, y=20)
 
 # Clear Canvas Button
-eraser = PhotoImage(file="C:\\Users\\Anil Cerejo\\OneDrive\\Desktop\\AIES\\Magic-board\\eraser.png")
+eraser = PhotoImage(file= ERASER_PATH)
 Button(root, image=eraser, bg="#f2f3f5", command=new_canvas).place(x=30, y=400)
 
 colors = Canvas(root, bg="#ffffff", width=37, height=300, bd=0)
@@ -73,18 +77,28 @@ value_label = ttk.Label(root, text=get_current_value())
 value_label.place(x=27, y=550)
 
 def capture_canvas():
-    x = root.winfo_rootx() + board.winfo_x()
-    y = root.winfo_rooty() + board.winfo_y()
-    x1 = x + board.winfo_width()
-    y1 = y + board.winfo_height()
-    img = ImageGrab.grab((x, y, x1, y1))
-    img.save("equation.png")  # Save the image
+    # Wait a moment for the GUI to update
+    root.update_idletasks()
+    root.update()
+    
+    # Get the window position and size
+    x = root.winfo_rootx()
+    y = root.winfo_rooty()
+    width = root.winfo_width()
+    height = root.winfo_height()
+    
+    # Capture the entire window
+    img = ImageGrab.grab(bbox=(x, y, x+width, y+height))
+    img.save(EQUATION_OUTPUT_PATH)  # Save the image
     return img
 
 def recognize_equation():
+    root.after(100, _capture_and_recognize)  # Wait 100ms before capturing
+
+def _capture_and_recognize():
     capture_canvas()  # Capture the canvas as an image
     # Run the second script for equation recognition
-    subprocess.run(['python', r'C:\Users\Anil Cerejo\OneDrive\Desktop\AIES\Magic-board\test.py'])  # Adjust the path to the second script
+    subprocess.run(['python', TEST_SCRIPT_PATH])
 
 recognize_button = Button(root, text="Capture and Recognize Equation", bg="#f2f3f5", command=recognize_equation)
 recognize_button.place(x=900, y=530)
