@@ -9,10 +9,18 @@ import numpy as np
 import cv2
 import tensorflow as tf
 
-model = tf.keras.models.load_model(r'C:\Users\Anil Cerejo\OneDrive\Desktop\AIES\Magic-board\eqn-detect-model.keras')
+model = tf.keras.models.load_model(r'AIES\eqn-detect-model.keras')
 
 # Define class names (make sure they match your model)
-class_names = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "="]
+class_names = [
+    "!", "(", ")", "+", ",", "-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "=",
+    "A", "C", "Delta", "G", "H", "M", "N", "R", "S", "T", "X", "[", "]",
+    "alpha", "ascii_124", "b", "beta", "cos", "d", "div", "e", "exists", "f", "forall",
+    "forward_slash", "gamma", "geq", "gt", "i", "in", "infty", "int", "j", "k", "l",
+    "lambda", "ldots", "leq", "lim", "log", "lt", "mu", "neq", "o", "p", "phi", "pi",
+    "pm", "prime", "q", "rightarrow", "sigma", "sin", "sqrt", "sum", "tan", "theta",
+    "times", "u", "v", "w", "y", "z", "{", "}"
+]
 
 root = Tk()
 root.title("Notes")
@@ -44,13 +52,13 @@ def new_canvas():
     board.delete('all')
     display_colors()
 
-image_icon = PhotoImage(file="C:\\Users\\Anil Cerejo\\OneDrive\\Desktop\\AIES\\Magic-board\\logo.png")
+image_icon = PhotoImage(file="AIES\logo.png")
 root.iconphoto(False, image_icon)
 
-color_box = PhotoImage(file="C:\\Users\\Anil Cerejo\\OneDrive\\Desktop\\AIES\\Magic-board\\color section.png")
+color_box = PhotoImage(file="AIES\color_section.png")
 Label(root, image=color_box, bg="#f2f3f5").place(x=10, y=20)
 
-eraser = PhotoImage(file="C:\\Users\\Anil Cerejo\\OneDrive\\Desktop\\AIES\\Magic-board\\eraser.png")
+eraser = PhotoImage(file="AIES\eraser.png")
 Button(root, image = eraser, bg="#f2f3f5", command=new_canvas).place(x=30, y=400)
 
 colors = Canvas(root, bg="#ffffff", width=37, height=300, bd=0)

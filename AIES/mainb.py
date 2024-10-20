@@ -76,7 +76,7 @@ class_names = [k for k, v in train_generator.class_indices.items()]
 
 # Process a specific image
 IMAGE = "equation.png"  # Change this to your target image file
-image_path = os.path.join(r"AIES\equation_images", IMAGE)
+image_path = os.path.join(r"MAGIC-BOARD", IMAGE)
 
 # Read and process the image
 input_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
